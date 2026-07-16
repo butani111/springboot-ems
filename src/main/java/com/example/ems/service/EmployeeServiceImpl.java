@@ -1,6 +1,7 @@
 package com.example.ems.service;
 
 import com.example.ems.entity.Employee;
+import com.example.ems.utils.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employees.stream()
                 .filter(e -> e.getId().equals(id))
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id " + id));
     }
 
     @Override
