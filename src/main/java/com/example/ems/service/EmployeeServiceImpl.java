@@ -1,7 +1,9 @@
 package com.example.ems.service;
 
+import com.example.ems.dto.EmployeeRequest;
+import com.example.ems.dto.EmployeeResponse;
 import com.example.ems.entity.Employee;
-import com.example.ems.utils.ResourceNotFoundException;
+import com.example.ems.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,9 +28,22 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee createEmployee(Employee employee) {
+    public EmployeeResponse createEmployee(EmployeeRequest req) {
+        Employee employee = new Employee();
+        employee.setId(req.getId());
+        employee.setName(req.getName());
+        employee.setEmail(req.getEmail());
+        employee.setDepartment(req.getDepartment());
+        employee.setSalary(req.getSalary());
+
         employees.add(employee);
-        return employee;
+
+        return new EmployeeResponse(
+                employee.getId(),
+                employee.getName(),
+                employee.getEmail(),
+                employee.getDepartment()
+        );
     }
 
     @Override

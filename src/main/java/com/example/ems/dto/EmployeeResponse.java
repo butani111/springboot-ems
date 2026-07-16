@@ -1,26 +1,17 @@
-package com.example.ems.entity;
+package com.example.ems.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
-
-public class Employee {
+public class EmployeeResponse {
 
     private Long id;
     private String name;
     private String email;
     private String department;
-    private Double salary;
 
-    public Employee() {
-    }
-
-    public Employee(long id, String name, String email, String department, Double salary) {
+    public EmployeeResponse(long id, String name, String email, String department) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.department = department;
-        this.salary = salary;
     }
 
     public Long getId() {
@@ -53,13 +44,5 @@ public class Employee {
 
     public void setDepartment(String department) {
         this.department = department;
-    }
-
-    public Double getSalary() {
-        return salary;
-    }
-
-    public void setSalary(Double salary) {
-        this.salary = salary;
     }
 }

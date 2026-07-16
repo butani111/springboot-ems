@@ -1,8 +1,9 @@
 package com.example.ems.controller;
 
+import com.example.ems.dto.EmployeeRequest;
+import com.example.ems.dto.EmployeeResponse;
 import com.example.ems.entity.Employee;
 import com.example.ems.service.EmployeeService;
-import com.example.ems.utils.ResourceNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,11 +37,8 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<Employee> createEmployee(@Valid @RequestBody Employee employee) {
-        Employee savedEmployee = employeeService.createEmployee(employee);
-
-        if (savedEmployee == null)
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity<EmployeeResponse> createEmployee(@Valid @RequestBody EmployeeRequest employee) {
+        EmployeeResponse savedEmployee = employeeService.createEmployee(employee);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedEmployee);
     }
@@ -55,10 +53,5 @@ public class EmployeeController {
         employeeService.deleteEmployee(id);
 
         return ResponseEntity.noContent().build();
-    }
-
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<String> handleException(ResourceNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 }

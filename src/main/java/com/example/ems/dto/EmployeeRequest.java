@@ -1,27 +1,23 @@
-package com.example.ems.entity;
+package com.example.ems.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 
-public class Employee {
+public class EmployeeRequest {
 
     private Long id;
+
+    @NotBlank(message = "Employee name is required.")
     private String name;
+
+    @Email
     private String email;
+
     private String department;
+
+    @Positive
     private Double salary;
-
-    public Employee() {
-    }
-
-    public Employee(long id, String name, String email, String department, Double salary) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.department = department;
-        this.salary = salary;
-    }
 
     public Long getId() {
         return id;
