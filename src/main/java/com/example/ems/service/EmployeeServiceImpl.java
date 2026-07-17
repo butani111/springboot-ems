@@ -4,6 +4,7 @@ import com.example.ems.dto.EmployeeRequest;
 import com.example.ems.dto.EmployeeResponse;
 import com.example.ems.entity.Employee;
 import com.example.ems.exception.ResourceNotFoundException;
+import com.example.ems.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,31 +13,33 @@ import java.util.List;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
+    private final EmployeeRepository repository;
     private final List<Employee> employees = new ArrayList<>();
+
+    public EmployeeServiceImpl(EmployeeRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public List<Employee> getAllEmployees() {
-        return employees;
+        return repository.findAll();
     }
 
     @Override
     public Employee getEmployee(Long id) {
-        return employees.stream()
-                .filter(e -> e.getId().equals(id))
-                .findFirst()
+        return repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id " + id));
     }
 
     @Override
     public EmployeeResponse createEmployee(EmployeeRequest req) {
         Employee employee = new Employee();
-        employee.setId(req.getId());
         employee.setName(req.getName());
         employee.setEmail(req.getEmail());
         employee.setDepartment(req.getDepartment());
         employee.setSalary(req.getSalary());
 
-        employees.add(employee);
+        repository.save(employee);
 
         return new EmployeeResponse(
                 employee.getId(),
@@ -47,18 +50,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee updateEmployee(Long id, Employee employee) {
-        for (int i = 0; i < employees.size(); ++i) {
-            if (employees.get(i).getId().equals(id)) {
-                employees.set(i, employee);
-                return employees.get(i);
-            }
-        }
-        return null;
+    public Employee updateEmployee(Long id, Employee updated) {
+        Employee employee = repository.findById(id).orElseThrow();
+        employee.setName(updated.getName());
+        employee.setDepartment(updated.getDepartment());
+        employee.setSalary(updated.getSalary());
+        return repository.save(employee);
     }
 
     @Override
     public void deleteEmployee(Long id) {
-        employees.removeIf(e -> e.getId().equals(id));
+        repository.deleteById(id);
     }
 }

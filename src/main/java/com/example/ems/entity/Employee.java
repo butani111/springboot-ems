@@ -1,22 +1,38 @@
 package com.example.ems.entity;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 
+@Entity
+@Table(name = "employees")
 public class Employee {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, length = 100)
     private String name;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(length = 50)
     private String department;
+
+    @Column(nullable = false)
     private Double salary;
+
+    @Transient
+    private Integer age;
+
 
     public Employee() {
     }
 
-    public Employee(long id, String name, String email, String department, Double salary) {
-        this.id = id;
+    public Employee(String name, String email, String department, Double salary) {
         this.name = name;
         this.email = email;
         this.department = department;
