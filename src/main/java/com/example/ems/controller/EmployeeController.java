@@ -5,6 +5,7 @@ import com.example.ems.dto.EmployeeResponse;
 import com.example.ems.entity.Employee;
 import com.example.ems.service.EmployeeService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +23,11 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<Employee> getEmployees() {
-        return employeeService.getAllEmployees();
+    public Page<Employee> getEmployees(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "1") int size
+    ) {
+        return employeeService.getAllEmployees(page, size);
     }
 
     @GetMapping("/{id}")

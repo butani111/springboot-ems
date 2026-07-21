@@ -5,6 +5,9 @@ import com.example.ems.dto.EmployeeResponse;
 import com.example.ems.entity.Employee;
 import com.example.ems.exception.ResourceNotFoundException;
 import com.example.ems.repository.EmployeeRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,6 +26,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<Employee> getAllEmployees() {
         return repository.findAll();
+    }
+
+    @Override
+    public Page<Employee> getAllEmployees(int page, int size) {
+//        return repository.findAll(PageRequest.of(page, size, Sort.by("salary").descending()));
+        return repository.findAll(PageRequest.of(page, size));
     }
 
     @Override
